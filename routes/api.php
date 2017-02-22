@@ -20,9 +20,7 @@ use Illuminate\Http\Request;
 Route::group(['namespace'=>'AdminApi'],function (){
     Route::post("/SignIn",'UserController@SignIn');
 
-    Route::get("/SignOut",function (){
-        return "1111";
-    });
+    Route::get("/Register",'UserController@Register');
 
 });
 

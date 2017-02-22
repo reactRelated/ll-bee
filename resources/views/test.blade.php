@@ -11,15 +11,15 @@
         <button id="ad">/AdminApi/SignIn</button>
        <script src="/js/jQuery.js"></script>
         <script>
-            $.ajaxSetup({
+            /*$.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-            });
+            });*/
             $("#ad").click(function () {
                 $.post("/api/SignIn",{
                     username:"bee",
-                    password:"123123123"
+                    password:"123123"
                 },function (data) {
                     console.log(data)
                 },'json')
