@@ -8,7 +8,7 @@ class User
 {
     public function userQuery($name)
     {
-        $userData = DB::select('select * from t_user where user_name = ?', [$name]);
+        $userData = DB::select('select password from t_user where user_name = ?', [$name]);
         return $userData;
     }
 }

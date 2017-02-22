@@ -13,6 +13,17 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+/*Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});*/
+
+Route::group(['namespace'=>'AdminApi'],function (){
+    Route::post("/SignIn",'UserController@SignIn');
+
+    Route::get("/SignOut",function (){
+        return "1111";
+    });
+
 });
+
+

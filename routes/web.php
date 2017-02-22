@@ -11,6 +11,7 @@
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -19,7 +20,4 @@ Route::get('/test', function () {
     return view('test');
 });
 
-Route::group(['prefix'=>'AdminApi','namespace'=>'AdminApi'],function (){
-    Route::any("/SignIn",'UserController@SignIn');
-});
 
