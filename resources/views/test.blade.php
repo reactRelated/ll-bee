@@ -11,16 +11,17 @@
         <button id="ad">/AdminApi/SignIn</button>
        <script src="/js/jQuery.js"></script>
         <script>
-            /*$.ajaxSetup({
+            $.ajaxSetup({
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'Content-Type':'application/json'
                 }
-            });*/
+            });
+            var user={  username:"bee",
+                password:"123123"}
+            var json =JSON.stringify(user)
             $("#ad").click(function () {
-                $.post("/api/SignIn",{
-                    username:"bee",
-                    password:"123123"
-                },function (data) {
+                $.post("/AdminApi/SignIn",json,function (data) {
                     console.log(data)
                 },'json')
             })

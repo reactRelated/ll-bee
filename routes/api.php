@@ -17,11 +17,5 @@ use Illuminate\Http\Request;
     return $request->user();
 });*/
 
-Route::group(['namespace'=>'AdminApi'],function (){
-    Route::post("/SignIn",'UserController@SignIn');
-
-    Route::get("/Register",'UserController@Register');
-
-});
 
 
