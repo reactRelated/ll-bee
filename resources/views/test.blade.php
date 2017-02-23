@@ -17,9 +17,11 @@
                     'Content-Type':'application/json'
                 }
             });
-            var user={  username:"bee",
-                password:"123123"}
+            var user={user:{  username:"bee",
+                password:"123123"}}
             var json =JSON.stringify(user)
+
+            var obj = $.parseJSON('{"username":"bee","password":"123123"}');
             $("#ad").click(function () {
                 $.post("/AdminApi/SignIn",json,function (data) {
                     console.log(data)

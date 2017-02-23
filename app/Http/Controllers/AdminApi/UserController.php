@@ -20,9 +20,9 @@ class UserController extends Controller
         /*登录*/
         public function  SignIn(Request $request){
             $UserModel = new UserModel;
-            $SignInData=$request->only(['username', 'password']);
-            $SignInData1=$request->get("username");
-            $SignInData2=$request->input('user.username');
+            $SignInData=$request->only(['user.username', 'user.password']);
+            $SignInData1=$request->get("user.username");
+            $SignInData2=$request->input('user.password');
             $SignInData3=$request->all();
              $UserData = $UserModel->userQuery($SignInData['username']);
 
