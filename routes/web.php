@@ -24,6 +24,6 @@ Route::get('/test', function () {
 Route::group(['prefix'=>'AdminApi','namespace'=>'AdminApi'],function (){
     Route::post("/SignIn",'UserController@SignIn');
 
-    Route::get("/Register",'UserController@Register');
+    Route::post("/Register",'UserController@Register');
 
 });
