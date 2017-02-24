@@ -13,17 +13,21 @@
         <script>
             $.ajaxSetup({
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                    'Content-Type':'application/json'
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            var user={user:{  username:"bee",
-                password:"123123"}}
-            var json =JSON.stringify(user)
+            var user={
+                username:'bee',
+                nickname:'陈',
+                password:'321321s',
+                email:'236914977@qq.com',
+                authority:0
+            };
 
-            var obj = $.parseJSON('{"username":"bee","password":"123123"}');
+
+
             $("#ad").click(function () {
-                $.post("/AdminApi/SignIn",json,function (data) {
+                $.post("/AdminApi/Register",user,function (data) {
                     console.log(data)
                 },'json')
             })
