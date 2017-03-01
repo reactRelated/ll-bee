@@ -41,3 +41,18 @@ echo md5('ABC').'<BR>';*/
 
 echo date_format(date_create("2016-09-25"),"Y/m/d").'<BR>';
 echo date("Y-m-d H:i:s",time()).'<BR>';
+
+
+class StatusCode
+{
+    const STATUS_ERROR = 900; //开发者末定义错误
+    const STATUS_ERROR_VESION = 901; //版本错误
+    const STATUS_ERROR_API_EXISTS = 909; //接口不存在
+}
+
+echo StatusCode::STATUS_ERROR.'<BR>';
+
+if([0]){
+    echo "222222";
+}else
+    echo "3333333333";

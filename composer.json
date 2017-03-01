@@ -23,7 +23,7 @@
             "App\\": "app/"
         },
         "files": [
-            "app/Common/Tool.php"
+            "app/Common/Tools.php"
         ]
     },
     "autoload-dev": {

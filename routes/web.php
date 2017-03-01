@@ -26,4 +26,6 @@ Route::group(['prefix'=>'AdminApi','namespace'=>'AdminApi'],function (){
 
     Route::post("/Register",'UserController@Register');
 
+    //添加文章
+    Route::post("/AddArticle",'ArticleController@AddArticle');
 });

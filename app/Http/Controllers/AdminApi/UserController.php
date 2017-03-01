@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\AdminApi;
 
-
+use App\Common\StsCode;
 use App\Models\UserModel;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -15,7 +15,6 @@ class UserController extends Controller
         /*
          * 注册*/
         public function  Register(Request $request ){
-
             $RegisterValidationParams = Validator::make(
                 $request->only(['username','nickname','password','email','authority']),
                 [
@@ -29,13 +28,19 @@ class UserController extends Controller
                     'password.numeric' => '密码不正确',
                    'email.email'=> '邮箱不正确'
                 ]);
+            //验证错误
             if ($RegisterValidationParams->fails()) {
 
-                $av =response()->json(['state'=>$RegisterValidationParams->errors()]);
-                return  $av;
+                return  response()->json(outJson(StsCode::STATUS_SUCCESS,$RegisterValidationParams->errors()->first()));
             }
 
             $RegisterData=$RegisterValidationParams->getData();
+
+            $isUserNameSame=DB::select(UserModel::$SignInSelect["SQL"],[$RegisterData['username']]);
+
+            if($isUserNameSame){
+                return  response()->json(outJson(StsCode::STATUS_ERROR,'用户已经注册'));
+            }
 
             $UserRegisterInsertSQL= UserModel::$RegisterInsert["SQL"];
 
@@ -48,24 +53,24 @@ class UserController extends Controller
 
 
             if ($bol){
-                return  response()->json(['state'=>'成功']);
+                return  response()->json(outJson(StsCode::STATUS_SUCCESS,'注册成功'));
             }else{
-                return  response()->json(['state'=>'失败']);
+                return  response()->json(outJson(StsCode::STATUS_ERROR,'注册失败'));
             }
 
         }
         /*登录*/
         public function  SignIn(Request $request){
-            $UserModel = new UserModel;
             $SignInData=$request->only(['username', 'password']);
 
-             $UserData = $UserModel->userQuery($SignInData['username']);
+            $UserData=DB::select(UserModel::$SignInSelect["SQL"],[$SignInData['username']]);
 
+            //对比是否存在
             if(md5($SignInData['password']) === $UserData[0]->password){
                 session(['username'=>$SignInData['username'] ,'password'=>$SignInData['password']]);
-                return  response()->json(['state'=>'成功']);
+                return  response()->json(outJson(StsCode::STATUS_SUCCESS,'登录成功'));
             }else{
-                return  response()->json(['state'=>'失败']);
+                return  response()->json(outJson(StsCode::STATUS_ERROR,'密码错误,登录失败'));
             }
 
 
