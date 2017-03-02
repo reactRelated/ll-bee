@@ -48,11 +48,19 @@ class ArticleController  extends Controller
                      'article_id'=>$AddArticleParams['article_id']
 
                  ]);
-                 if($AddArticleData && $FK_UserArticle)
+
+                 if($AddArticleData && $FK_UserArticle){
+                     DB::commit();
                      return  response()->json(outJson(StsCode::STATUS_SUCCESS,'添加文章成功'));
-                 else
+                 }
+                 else{
+                     DB::rollback();
                      return  response()->json(outJson(StsCode::STATUS_ERROR,'添文章加失败'));
+                 }
+
+
              }catch (QueryException $ex){
+                 DB::rollback();
                  return  response()->json(outJson(StsCode::STATUS_ERROR,'添文章加失败'));
              }
 

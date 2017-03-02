@@ -43,6 +43,22 @@
                     console.log(data)
                 },'json')
             })
+
+
+          var arg = 1;
+            var as = 1;
+            $test = function (a) {
+
+              a++;
+                console.log(a)
+            };
+            $test(as);  //输出text
+
+
+            $test(as); //输出text
+            console.log(as)
+
+
         </script>
     </body>
 </html>
