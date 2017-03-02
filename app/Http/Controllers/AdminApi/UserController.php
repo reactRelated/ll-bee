@@ -68,7 +68,11 @@ class UserController extends Controller
             //对比是否存在
             if(md5($SignInData['password']) === $UserData[0]->password){
 
-                session(['userinfo.username'=>$SignInData['username'] ,'userinfo.password'=>md5($SignInData['password'])]);
+                session([
+                    'userinfo.user_id'=>$UserData[0]->user_id,
+                    'userinfo.username'=>$SignInData['username'],
+                    'userinfo.password'=>md5($SignInData['password']
+                    )]);
 
                 return  response()->json(outJson(StsCode::STATUS_SUCCESS,'登录成功'));
             }else{

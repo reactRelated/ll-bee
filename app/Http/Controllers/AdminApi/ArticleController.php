@@ -12,6 +12,8 @@ use App\Common\StsCode;
 use App\Http\Controllers\Controller;
 use App\Models\ArticleModel;
 use App\Models\ClassifyModel;
+use App\Models\FK_UserArticleModel;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -31,18 +33,31 @@ class ArticleController  extends Controller
 
         /*添加文章*/
          public  function AddArticle(Request $request){
-            $AddArticleParams= $request->all();
+             DB::beginTransaction();
+             try{
+                 $AddArticleParams= $request->all();
 
-             $AddArticleParams['article_id'] = autoIncrementMD5();
-             $AddArticleParams['author'] = session('userinfo.username');
-             $AddArticleParams['updatetime'] = currentDateTime();
+                 $AddArticleParams['article_id'] = autoIncrementMD5();
+                 $AddArticleParams['author'] = session('userinfo.username');
+                 $AddArticleParams['updatetime'] = currentDateTime();
 
-             $AddArticleData=DB::insert(ArticleModel::$AddArticleInsert['SQL'],$AddArticleParams);
+                 $AddArticleData=DB::insert(ArticleModel::$AddArticleInsert['SQL'],$AddArticleParams);
+                 $FK_UserArticle = DB::insert(FK_UserArticleModel::$FK_UserArticleInsert['SQL'],[
+                     'user_article_id'=>autoIncrementMD5(),
+                     'user_id'=>session('userinfo.user_id'),
+                     'article_id'=>$AddArticleParams['article_id']
 
-             if($AddArticleData)
-                 return  response()->json(outJson(StsCode::STATUS_SUCCESS,'添加文章成功'));
-             else
+                 ]);
+                 if($AddArticleData && $FK_UserArticle)
+                     return  response()->json(outJson(StsCode::STATUS_SUCCESS,'添加文章成功'));
+                 else
+                     return  response()->json(outJson(StsCode::STATUS_ERROR,'添文章加失败'));
+             }catch (QueryException $ex){
                  return  response()->json(outJson(StsCode::STATUS_ERROR,'添文章加失败'));
+             }
+
+
+
          }
 
         /*文章列表*/

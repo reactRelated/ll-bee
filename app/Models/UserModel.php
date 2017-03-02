@@ -16,7 +16,7 @@ class UserModel
 
     /*查*/
     static $SignInSelect=[
-        'SQL'=>'select password from '.self::table.' where username = ?'
+        'SQL'=>'select * from '.self::table.' where username = ?'
     ];
 
 
