@@ -33,8 +33,33 @@ class ArticleController  extends Controller
 
         /*添加文章*/
          public  function AddArticle(Request $request){
-             DB::beginTransaction();
-             try{
+           $AddArticleTransaction= DB::transaction(function()use($request){
+
+               try{
+                   $AddArticleParams= $request->all();
+
+                   $AddArticleParams['article_id'] = autoIncrementMD5();
+                   $AddArticleParams['author'] = session('userinfo.username');
+                   $AddArticleParams['updatetime'] = currentDateTime();
+
+                   $AddArticleData=DB::insert(ArticleModel::$AddArticleInsert['SQL'],$AddArticleParams);
+                   $FK_UserArticle = DB::insert(FK_UserArticleModel::$FK_UserArticleInsert['SQL'],[
+                       'user_article_id'=>autoIncrementMD5(),
+                       'user_id'=>session('userinfo.user_d'),
+                       'article_id'=>$AddArticleParams['article_id']
+
+                   ]);
+                   if($AddArticleData && $FK_UserArticle)
+                       return  response()->json(outJson(StsCode::STATUS_SUCCESS,'添加文章成功'));
+               }catch (QueryException $ex){
+                   DB::rollback();
+                   return  response()->json(outJson(StsCode::STATUS_ERROR,'添文章加失败'));
+               }
+
+             });
+
+             return $AddArticleTransaction;
+            /* try{
                  $AddArticleParams= $request->all();
 
                  $AddArticleParams['article_id'] = autoIncrementMD5();
@@ -62,7 +87,7 @@ class ArticleController  extends Controller
              }catch (QueryException $ex){
                  DB::rollback();
                  return  response()->json(outJson(StsCode::STATUS_ERROR,'添文章加失败'));
-             }
+             }*/
 
 
 
