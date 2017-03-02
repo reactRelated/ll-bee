@@ -26,6 +26,18 @@ Route::group(['prefix'=>'AdminApi','namespace'=>'AdminApi'],function (){
 
     Route::post("/Register",'UserController@Register');
 
-    //添加文章
-    Route::post("/AddArticle",'ArticleController@AddArticle');
+    Route::group(['middleware'=>'checkLogin'],function (){
+        //登出
+        Route::post("/SignOut",'UserController@SignOut');
+
+        //添加文章分类
+        Route::post("/AddArticleClassify",'ArticleController@AddArticleClassify');
+        //添加文章
+        Route::post("/AddArticle",'ArticleController@AddArticle');
+
+        //查询文章列表
+        Route::post("/ArticleList",'ArticleController@ArticleList');
+
+    });
+
 });

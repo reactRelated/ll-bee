@@ -9,6 +9,7 @@
     </head>
     <body>
         <button id="ad">/AdminApi/SignIn</button>
+        <button id="out">/AdminApi/SignOut</button>
        <script src="/js/jQuery.js"></script>
         <script>
             $.ajaxSetup({
@@ -24,10 +25,21 @@
                 authority:0
             };
 
+                var login ={
+                    username:'bee',
+                    password:'321321'
 
+                }
 
             $("#ad").click(function () {
-                $.post("/AdminApi/Register",user,function (data) {
+                $.post("/AdminApi/SignIn",login,function (data) {
+                    console.log(data)
+                },'json')
+            })
+
+
+            $("#out").click(function () {
+                $.post("/AdminApi/SignOut",login,function (data) {
                     console.log(data)
                 },'json')
             })

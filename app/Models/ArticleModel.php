@@ -8,7 +8,6 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\DB;
 class ArticleModel
 {
     const table = 't_article';
@@ -17,6 +16,11 @@ class ArticleModel
     /*增*/
 
     static $AddArticleInsert = [
-        'SQL'=> 'insert into  '.self::table.' (article_id,title,info,author,updatetime,articletype) values (:article_id,:title,:info,author,:updatetime,:articletype)'
+        'SQL'=> 'insert into  '.self::table.' (article_id,title,info,author,updatetime,articletype) values (:article_id,:title,:info,:author,:updatetime,:articletype)'
+    ];
+
+    /*查*/
+    static $ArticleListSelect = [
+        'SQL'=> 'select * from '.self::table
     ];
 }

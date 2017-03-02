@@ -67,13 +67,24 @@ class UserController extends Controller
 
             //对比是否存在
             if(md5($SignInData['password']) === $UserData[0]->password){
-                session(['username'=>$SignInData['username'] ,'password'=>$SignInData['password']]);
+
+                session(['userinfo.username'=>$SignInData['username'] ,'userinfo.password'=>md5($SignInData['password'])]);
+
                 return  response()->json(outJson(StsCode::STATUS_SUCCESS,'登录成功'));
             }else{
                 return  response()->json(outJson(StsCode::STATUS_ERROR,'密码错误,登录失败'));
             }
 
 
+
+        }
+
+        /*登出*/
+        public function  SignOut(Request $request){
+
+            session()->forget('userinfo');
+
+            return  response()->json(outJson(StsCode::STATUS_SUCCESS,'登出成功'));
 
         }
 
