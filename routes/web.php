@@ -22,9 +22,15 @@ Route::get('/test', function () {
 
 
 Route::group(['prefix'=>'AdminApi','namespace'=>'AdminApi'],function (){
-    Route::post("/SignIn",'UserController@SignIn');
 
+    Route::any("/ceshi",function (){
+        return ['status'=>400,"aaa"=>222222];
+    });
+
+    Route::post("/SignIn",'UserController@SignIn');
     Route::post("/Register",'UserController@Register');
+
+
 
     Route::group(['middleware'=>'checkLogin'],function (){
         //登出
