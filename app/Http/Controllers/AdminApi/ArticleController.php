@@ -30,6 +30,15 @@ class ArticleController  extends Controller
                     else
                     return  response()->json(outJson(StsCode::STATUS_ERROR,'类型添加失败'));
 }
+        /*查找分类列表*/
+
+        public  function  selectArticleClassify (){
+            $selectArticleClassifyData=  DB::select( ClassifyModel::$SelectArticleClassifySelect['SQL']);
+            if($selectArticleClassifyData)
+                return  response()->json(outJson(StsCode::STATUS_SUCCESS,'查询成功',$selectArticleClassifyData));
+            else
+                return  response()->json(outJson(StsCode::STATUS_ERROR,'查询失败'));
+        }
 
         /*添加文章*/
          public  function AddArticle(Request $request){
@@ -45,15 +54,14 @@ class ArticleController  extends Controller
                    $AddArticleData=DB::insert(ArticleModel::$AddArticleInsert['SQL'],$AddArticleParams);
                    $FK_UserArticle = DB::insert(FK_UserArticleModel::$FK_UserArticleInsert['SQL'],[
                        'user_article_id'=>autoIncrementMD5(),
-                       'user_id'=>session('userinfo.user_d'),
+                       'user_id'=>session('userinfo.user_id'),
                        'article_id'=>$AddArticleParams['article_id']
-
                    ]);
                    if($AddArticleData && $FK_UserArticle)
                        return  response()->json(outJson(StsCode::STATUS_SUCCESS,'添加文章成功'));
                }catch (QueryException $ex){
                    DB::rollback();
-                   return  response()->json(outJson(StsCode::STATUS_ERROR,'添文章加失败'));
+                   return  response()->json(outJson(StsCode::STATUS_ERROR,$ex));
                }
 
              });

@@ -23,9 +23,6 @@ Route::get('/test', function () {
 
 Route::group(['prefix'=>'AdminApi','namespace'=>'AdminApi'],function (){
 
-    Route::any("/ceshi",function (){
-        return ['status'=>400,"aaa"=>222222];
-    });
 
     Route::post("/SignIn",'UserController@SignIn');
     Route::post("/Register",'UserController@Register');
@@ -38,9 +35,12 @@ Route::group(['prefix'=>'AdminApi','namespace'=>'AdminApi'],function (){
 
         //添加文章分类
         Route::post("/AddArticleClassify",'ArticleController@AddArticleClassify');
+        //查询文章分类
+        Route::post("/selectArticleClassify",'ArticleController@selectArticleClassify');
+
+
         //添加文章
         Route::post("/AddArticle",'ArticleController@AddArticle');
-
         //查询文章列表
         Route::post("/ArticleList",'ArticleController@ArticleList');
 
