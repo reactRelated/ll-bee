@@ -50,11 +50,11 @@ class UserController extends Controller
             $RegisterData['regdate']=currentDateTime();
             $RegisterData['password'] = md5($RegisterData['password']);
 
-            $bol = DB::insert($UserRegisterInsertSQL,$RegisterData);
+            $UserRegisterResult = DB::insert($UserRegisterInsertSQL,$RegisterData);
 
 
-            if ($bol){
-                return  response()->json(outJson(StsCode::STATUS_SUCCESS,'注册成功'));
+            if ($UserRegisterResult){
+                return  response()->json(outJson(StsCode::STATUS_SUCCESS,'注册成功',$UserRegisterResult));
             }else{
                 return  response()->json(outJson(StsCode::STATUS_ERROR,'注册失败'));
             }
@@ -75,7 +75,7 @@ class UserController extends Controller
                     'userinfo.password'=>md5($SignInData['password']
                     )]);
 
-                return  response()->json(outJson(StsCode::STATUS_SUCCESS,'登录成功'));
+                return  response()->json(outJson(StsCode::STATUS_SUCCESS,'登录成功',$UserData[0]));
             }else{
                 return  response()->json(outJson(StsCode::STATUS_ERROR,'密码错误,登录失败'));
             }
