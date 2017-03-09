@@ -16,7 +16,7 @@ class ArticleModel
     /*增*/
 
     static $AddArticleInsert = [
-        'SQL'=> 'insert into  '.self::table.' (article_id,title,info,author,updatetime,articletype) values (:article_id,:title,:info,:author,:updatetime,:articletype)'
+        'SQL'=> 'insert into  '.self::table.' (article_id,title,info,author,updatetime,classify) values (:article_id,:title,:info,:author,:updatetime,:classify)'
     ];
 
     /*查*/
