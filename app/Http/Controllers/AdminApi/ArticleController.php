@@ -126,7 +126,7 @@ class ArticleController  extends Controller
                 $bol=false;
             }
 
-            $ArticleListParam = Validator::make(
+            /*$ArticleListParam = Validator::make(
                 $request->all(),
                 [
                     'title' => 'present',
@@ -140,7 +140,8 @@ class ArticleController  extends Controller
                 return  response()->json(outJson(StsCode::STATUS_SUCCESS,$ArticleListParam->errors()->first()));
             }
 
-            $ArticleListData=$ArticleListParam->getData();
+            $ArticleListData=$ArticleListParam->getData();*/
+            $ArticleListData=$request->all();
             try{
             $ArticleListRes=ArticleModel::doQueryArticleList($ArticleListData);
 
