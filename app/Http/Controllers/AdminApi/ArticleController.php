@@ -16,6 +16,7 @@ use App\Models\FK_UserArticleModel;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class ArticleController  extends Controller
 {
@@ -31,7 +32,6 @@ class ArticleController  extends Controller
                     return  response()->json(outJson(StsCode::STATUS_ERROR,'类型添加失败'));
 }
         /*查找分类列表*/
-
         public  function  selectArticleClassify (){
             $selectArticleClassifyData=  DB::select( ClassifyModel::$SelectArticleClassifySelect['SQL']);
             if($selectArticleClassifyData)
@@ -102,11 +102,55 @@ class ArticleController  extends Controller
          }
 
         /*文章列表*/
-        public  function  ArticleList(){
-            $ArticleListData= DB::select(ArticleModel::$ArticleListSelect['SQL']);
-            if($ArticleListData)
-                return  response()->json(outJson(StsCode::STATUS_SUCCESS,'查询成功',$ArticleListData));
+        public  function  ArticleList(Request $request){
+            $d=[
+                "a"=>"",
+                "c"=>null,
+                "d"=>"asd"
+            ];
+            $a1= empty($d["a"]);
+            $a2= isset($d["a"]);
+
+            $b1= empty($d["b"]);
+            $b2= isset($d["b"]);
+
+            $c1= empty($d["c"]);
+            $c2= isset($d["c"]);
+
+            $d1= empty($d["d"]);
+            $d2= isset($d["d"]);
+
+            if([]){
+               $bol=true ;
+            }else{
+                $bol=false;
+            }
+
+            $ArticleListParam = Validator::make(
+                $request->all(),
+                [
+                    'title' => 'present',
+                    'classify' => 'present',
+                    'author' => 'present',
+                    'updatetime' => 'present'
+                ]);
+
+            if ($ArticleListParam->fails()) {
+
+                return  response()->json(outJson(StsCode::STATUS_SUCCESS,$ArticleListParam->errors()->first()));
+            }
+
+            $ArticleListData=$ArticleListParam->getData();
+            try{
+            $ArticleListRes=ArticleModel::doQueryArticleList($ArticleListData);
+
+            if(count($ArticleListRes)>0)
+                return  response()->json(outJson(StsCode::STATUS_SUCCESS,'查询成功',$ArticleListRes));
             else
-                return  response()->json(outJson(StsCode::STATUS_ERROR,'查询失败'));
+                return  response()->json(outJson(StsCode::STATUS_SUCCESS,'未能查到数据',$ArticleListRes));
+            }catch(QueryException $ex){
+                return  response()->json(outJson(StsCode::STATUS_ERROR,'查询失败',$ex));
+            }
+
         }
 }

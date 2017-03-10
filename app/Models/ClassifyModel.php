@@ -17,4 +17,8 @@ class ClassifyModel
     static $SelectArticleClassifySelect = [
         'SQL'=> 'select * from '.self::table
     ];
+
+
+
+
 }
