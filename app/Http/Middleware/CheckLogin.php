@@ -18,7 +18,7 @@ class CheckLogin
         if ($request->session()->has('userinfo')){
             return $next($request);
         }else{
-            return  response()->json(outJson(StsCode::STATUS_ERROR,'未登陆,请登录'));
+            return  response()->json(outJson(StsCode::STATUS_NOTLOGGED,'未登陆,请登录'));
         }
 
 

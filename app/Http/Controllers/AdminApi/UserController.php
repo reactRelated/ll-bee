@@ -85,12 +85,32 @@ class UserController extends Controller
         }
 
         /*登出*/
-        public function  SignOut(Request $request){
+        public function  SignOut(){
 
             session()->forget('userinfo');
 
             return  response()->json(outJson(StsCode::STATUS_SUCCESS,'登出成功'));
 
+        }
+        /*获取用户信息*/
+        public function GetUserInfo()
+        {
+
+            $UserData=DB::select(UserModel::$SignInSelect["SQL"],[session('userinfo.username')]);
+          return  response()->json(outJson(StsCode::STATUS_SUCCESS,'查询成功',$UserData[0]));
+        }
+
+        /*编辑用户信息*/
+        public function EditUserInfo(Request $request){
+            $EditUserInfoParam=$request->all();
+
+            $EditUserInfoRes=UserModel::UserInfoUpdate($EditUserInfoParam);
+
+            if($EditUserInfoRes){
+                return  response()->json(outJson(StsCode::STATUS_SUCCESS,'更新成功',$EditUserInfoRes));
+            } else{
+                return  response()->json(outJson(StsCode::STATUS_ERROR,'更新失败'));
+            }
         }
 
 }

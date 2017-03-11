@@ -3,6 +3,8 @@
 namespace App\Models;
 
 
+use Illuminate\Support\Facades\DB;
+
 class UserModel
 {
 
@@ -19,5 +21,40 @@ class UserModel
         'SQL'=>'select * from '.self::table.' where username = ?'
     ];
 
+    /*改*/
+    static $UserInfoUpdate=[
+        'SQL'=>'update '.self::table.' set nickname = :nickname,  where name = ?'
+    ];
+
+
+    static function UserInfoUpdate($param){
+         $updateParam="";
+        $data=[
+            "user_id"=>$param["user_id"]
+        ];
+        if(!empty($param["nickname"])){
+            $updateParam .= ' nickname = :nickname,';
+            $data["nickname"]=$param["nickname"];
+        }
+        if(!empty($param["email"])){
+            $updateParam .= ' email = :email,';
+            $data["email"]=$param["email"];
+        }
+
+        if(!empty($param["phone"])){
+            $updateParam .= ' phone = :phone,';
+            $data["phone"]=$param["phone"];
+        }
+        if(!empty($param["password"])){
+            $updateParam .= ' password = :password,';
+            $data["password"]=md5($param["password"]);
+        }
+        if(!empty($param["residence"])){
+            $updateParam .= ' residence = :residence,';
+            $data["residence"]=$param["residence"];
+        }
+
+        return DB::update('update '.self::table.' set '.chop($updateParam,",").'  where user_id = :user_id',$data);
+    }
 
 }

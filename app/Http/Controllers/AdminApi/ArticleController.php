@@ -103,28 +103,6 @@ class ArticleController  extends Controller
 
         /*文章列表*/
         public  function  ArticleList(Request $request){
-            $d=[
-                "a"=>"",
-                "c"=>null,
-                "d"=>"asd"
-            ];
-            $a1= empty($d["a"]);
-            $a2= isset($d["a"]);
-
-            $b1= empty($d["b"]);
-            $b2= isset($d["b"]);
-
-            $c1= empty($d["c"]);
-            $c2= isset($d["c"]);
-
-            $d1= empty($d["d"]);
-            $d2= isset($d["d"]);
-
-            if([]){
-               $bol=true ;
-            }else{
-                $bol=false;
-            }
 
             /*$ArticleListParam = Validator::make(
                 $request->all(),

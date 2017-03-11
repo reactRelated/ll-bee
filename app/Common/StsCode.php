@@ -51,6 +51,7 @@ class StsCode
     /**
      * ErrorCode >= 1000 ,成功请求,并进入正常逻辑
      */
+    const STATUS_NOTLOGGED = 101; //为未登录
     const STATUS_SUCCESS = 1000; //请求成功,逻辑处理成功
 
     const STATUS_SUCCESS_DO_ERROR = 1001; //请求成功,逻辑处理失败,末定义错误
@@ -118,6 +119,7 @@ class StsCode
         self::STATUS_SUCCESS_DO_ERROR_FILE_DODIR => '目录权限不足',
         self::STATUS_SUCCESS_DO_ERROR_FILE_DOFILE => '文件权限不足',
         self::STATUS_ERROR_NOT_REGISTER => '用户未注册',
+        self::STATUS_NOTLOGGED => '未登录',
     );
 
     public static function getCodes()
