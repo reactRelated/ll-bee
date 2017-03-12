@@ -32,7 +32,7 @@ class UserController extends Controller
             //验证错误
             if ($RegisterValidationParams->fails()) {
 
-                return  response()->json(outJson(StsCode::STATUS_SUCCESS,$RegisterValidationParams->errors()->first()));
+                return  response()->json(outJson(StsCode::STATUS_ERROR,$RegisterValidationParams->errors()->first()));
             }
 
             $RegisterData=$RegisterValidationParams->getData();
@@ -118,16 +118,24 @@ class UserController extends Controller
 
 
             //判断请求中是否包含name=file的上传文件
-            if(!$request->hasFile('file')){
+            if(!$request->hasfile('file')){
                 return  response()->json(outJson(StsCode::STATUS_ERROR,'上传头像为空'));
             }
             $file = $request->file('file');
+            $avatorValidator = Validator::make( array('file' => $file), array('file' => 'required|image'),
+                [
+                    'file.image'=> '请上传正确的图片格式'
+                ]);
+            if ($avatorValidator->fails()) {
+
+                return  response()->json(outJson(StsCode::STATUS_ERROR,$avatorValidator->errors()->first()));
+            }
             //判断文件上传过程中是否出错
             if(!$file->isValid()){
                 return  response()->json(outJson(StsCode::STATUS_ERROR,'头像上传出错'));
             }
-            $destPath = realpath(public_path('pictureStorage'._DS_.'avatat'));
-            $avatatPath = 'pictureStorage'._DS_.'avatat';
+            $destPath = realpath(public_path('pictureStorage'._DS_.'avator'));
+            $avatatPath = 'pictureStorage'._DS_.'avator';
 
             if(!file_exists($destPath)){
                 $destPath=public_path($avatatPath);

@@ -43,7 +43,7 @@ function outJson ($status = StsCode::STATUS_SUCCESS ,  $msg = null, $data = null
 }
 
 function httpHost(){
-    return $_SERVER['HTTP_HOST'];
+    return 'http://'.$_SERVER['HTTP_HOST'];
 }
 
 
