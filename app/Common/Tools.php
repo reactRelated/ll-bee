@@ -3,6 +3,7 @@
 
 use App\Common\StsCode;
 
+define('_DS_', DIRECTORY_SEPARATOR);
     //MD5自增
 function autoIncrementMD5($len=32)
     {
@@ -39,6 +40,10 @@ function outJson ($status = StsCode::STATUS_SUCCESS ,  $msg = null, $data = null
 
       return $jsonData;
 
+}
+
+function httpHost(){
+    return $_SERVER['HTTP_HOST'];
 }
 
 

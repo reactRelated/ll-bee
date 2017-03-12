@@ -16,16 +16,23 @@ class UserModel
         'SQL'=> 'insert into  '.self::table.' (user_id,username,nickname,password,email,authority,regdate) values (:user_id,:username,:nickname,:password,:email,:authority,:regdate)'
     ];
 
+
     /*查*/
     static $SignInSelect=[
         'SQL'=>'select * from '.self::table.' where username = ?'
     ];
 
     /*改*/
-    static $UserInfoUpdate=[
-        'SQL'=>'update '.self::table.' set nickname = :nickname,  where name = ?'
+
+
+    static $UserAvatorUpdate=[
+        'SQL'=>'update '.self::table.' set avator = :Avator,  where name = ?'
     ];
 
+    static function UserAvatorUpdate($param){
+        $a ='update '.self::table.' set avator = :avator  where user_id = :user_id';
+        return DB::update('update '.self::table.' set avator = :avator  where user_id = :user_id',$param);
+    }
 
     static function UserInfoUpdate($param){
          $updateParam="";

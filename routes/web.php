@@ -36,6 +36,7 @@ Route::group(['prefix'=>'AdminApi','namespace'=>'AdminApi'],function (){
         Route::post("/GetUserInfo",'UserController@GetUserInfo');
         //修改用户信息
         Route::post("/EditUserInfo",'UserController@EditUserInfo');
+        Route::post("/EditUserAvatar",'UserController@EditUserAvatar');
 
 
 

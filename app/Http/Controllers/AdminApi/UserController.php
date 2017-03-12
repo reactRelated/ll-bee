@@ -95,8 +95,9 @@ class UserController extends Controller
         /*获取用户信息*/
         public function GetUserInfo()
         {
-
             $UserData=DB::select(UserModel::$SignInSelect["SQL"],[session('userinfo.username')]);
+
+            $UserData[0]->avator=httpHost().$UserData[0]->avator;
           return  response()->json(outJson(StsCode::STATUS_SUCCESS,'查询成功',$UserData[0]));
         }
 
@@ -112,5 +113,46 @@ class UserController extends Controller
                 return  response()->json(outJson(StsCode::STATUS_ERROR,'更新失败'));
             }
         }
+        /*头像编辑*/
+        public function EditUserAvatar(Request $request){
+
+
+            //判断请求中是否包含name=file的上传文件
+            if(!$request->hasFile('file')){
+                return  response()->json(outJson(StsCode::STATUS_ERROR,'上传头像为空'));
+            }
+            $file = $request->file('file');
+            //判断文件上传过程中是否出错
+            if(!$file->isValid()){
+                return  response()->json(outJson(StsCode::STATUS_ERROR,'头像上传出错'));
+            }
+            $destPath = realpath(public_path('pictureStorage'._DS_.'avatat'));
+            $avatatPath = 'pictureStorage'._DS_.'avatat';
+
+            if(!file_exists($destPath)){
+                $destPath=public_path($avatatPath);
+                mkdir($destPath,0755,true);
+            }
+
+            $filename = 'img'.currentDateTime("_Y.m.d_H.i.s_").$file->getClientOriginalName();
+
+            if(!$file->move($destPath,$filename)){
+                return  response()->json(outJson(StsCode::STATUS_ERROR,'头像保存失败'));
+            }
+            //转换成真实路径
+            $avatatImg=str_replace("\\","/" ,_DS_.$avatatPath._DS_.$filename) ;
+
+            if(UserModel::UserAvatorUpdate([
+                "user_id"=>session("userinfo.user_id"),
+                "avator"=>$avatatImg
+            ])){
+                return  response()->json(outJson(StsCode::STATUS_SUCCESS,'头像上传成功'));
+            }else{
+                return  response()->json(outJson(StsCode::STATUS_ERROR,'头像数据库保存失败'));
+            }
+
+        }
+
+
 
 }
