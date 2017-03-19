@@ -46,5 +46,10 @@ function httpHost(){
     return 'http://'.$_SERVER['HTTP_HOST'];
 }
 
+function array_join($a,$b ,$interval)
+{
+    return $a.$interval.$b;
+}
+
 
 

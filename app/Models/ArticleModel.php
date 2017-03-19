@@ -23,33 +23,35 @@ class ArticleModel
 
     /*查*/
     static $ArticleListSelect = [
-        'SQL'=> 'select * from '.self::table
+        'SQL'=> 'select * from '.self::table .' inner join t_classify on t_article.classify = t_classify.classify_id'
     ];
 
 
     static function doQueryArticleList($param){
-        $sql_where = " where 1=1";
+        $sql_where = [];
         $data=[];
         if(!empty($param["title"])){
-           $sql_where = $sql_where.' and title like :title';
+
+            array_push($sql_where,'title like :title');
             $data["title"]='%'.$param["title"].'%';
         }
 
-        if(!empty($param["classify"])){
-            $sql_where = $sql_where.' and classify like :classify';
-            $data["classify"]='%'.$param["classify"].'%';
+        if(!empty($param["classifyname"])){
+            array_push($sql_where,'classifyname like :classifyname');
+            $data["classifyname"]='%'.$param["classifyname"].'%';
         }
 
         if(!empty($param["author"])){
-            $sql_where = $sql_where.' and author like :author';
+            array_push($sql_where,'author like :author');
             $data["author"]='%'.$param["author"].'%';
         }
 
         if(!empty($param["updatetime"])){
-            $sql_where = $sql_where.' and updatetime like :updatetime';
+            array_push($sql_where,'updatetime like :updatetime');
             $data["updatetime"]='%'.$param["updatetime"].'%';
         }
-
+        $sql_where =count($sql_where) > 0 ? " where ".join(" and ",$sql_where) :"";
+        $a=self::$ArticleListSelect['SQL'].$sql_where;
         return DB::select(self::$ArticleListSelect['SQL'].$sql_where,$data);
 
 
