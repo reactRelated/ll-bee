@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\QueryException;
 
 class UserController extends Controller
 {
@@ -62,23 +63,47 @@ class UserController extends Controller
         }
         /*登录*/
         public function  SignIn(Request $request){
-            $SignInData=$request->only(['username', 'password']);
+//            $SignInParams=$request->only(['username', 'password']);
+            $SignInParams = Validator::make(
+                $request->only(['username', 'password']),
+                [
+                    'username' => 'required',
+                    'password' => 'required'
+                ],
+                [
+                    'username.required' => '用户名不能为空',
+                    'password.required'=> '密码不能为空'
+                ]);
+                //验证错误
+                if ($SignInParams->fails()) {
 
-            $UserData=DB::select(UserModel::$SignInSelect["SQL"],[$SignInData['username']]);
+                    return  response()->json(outJson(StsCode::STATUS_ERROR,$SignInParams->errors()->first()));
+                }
+                $SignInData=$SignInParams->getData();
 
-            //对比是否存在
-            if(md5($SignInData['password']) === $UserData[0]->password){
+            try{
+                $UserData=DB::select(UserModel::$SignInSelect["SQL"],[$SignInData['username']]);
 
-                session([
-                    'userinfo.user_id'=>$UserData[0]->user_id,
-                    'userinfo.username'=>$SignInData['username'],
-                    'userinfo.password'=>md5($SignInData['password']
-                    )]);
+                if(count($UserData)==0){
+                    return  response()->json(outJson(StsCode::STATUS_ERROR,'用户不存在'));
+                }
+                //对比是否存在
+                if(md5($SignInData['password']) === $UserData[0]->password){
 
-                return  response()->json(outJson(StsCode::STATUS_SUCCESS,'登录成功',$UserData[0]));
-            }else{
-                return  response()->json(outJson(StsCode::STATUS_ERROR,'密码错误,登录失败'));
+                    session([
+                        'userinfo.user_id'=>$UserData[0]->user_id,
+                        'userinfo.username'=>$UserData[0]->username,
+                        'userinfo.password'=>$UserData[0]->password
+                    ]);
+
+                    return  response()->json(outJson(StsCode::STATUS_SUCCESS,'登录成功',$UserData[0]));
+                }else{
+                    return  response()->json(outJson(StsCode::STATUS_ERROR,'密码错误,登录失败'));
+                }
+            }catch (QueryException $ex){
+                return  response()->json(outJson(StsCode::STATUS_ERROR,'用户名未知',$ex));
             }
+
 
 
 
