@@ -95,7 +95,6 @@ class UserController extends Controller
                         'userinfo.username'=>$UserData[0]->username,
                         'userinfo.password'=>$UserData[0]->password
                     ]);
-
                     return  response()->json(outJson(StsCode::STATUS_SUCCESS,'登录成功',$UserData[0]));
                 }else{
                     return  response()->json(outJson(StsCode::STATUS_ERROR,'密码错误,登录失败'));
