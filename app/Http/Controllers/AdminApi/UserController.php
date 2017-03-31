@@ -185,6 +185,17 @@ class UserController extends Controller
 
         }
 
+        /*检查用户名知否重名*/
+        public function CheckUsername(Request $request){
+            $username = $request->only(['username']);
+            $CheckUserData=DB::select(UserModel::$SignInSelect["SQL"],[$username['username']]);
+
+            if(count($CheckUserData)==0){
+                return  response()->json(outJson(StsCode::STATUS_SUCCESS,'可以注册'));
+            }else{
+                return  response()->json(outJson(StsCode::STATUS_ERROR,'用户名已存在'));
+            }
+        }
 
 
 }

@@ -26,6 +26,7 @@ Route::group(['prefix'=>'AdminApi','namespace'=>'AdminApi'],function (){
 
     Route::post("/SignIn",'UserController@SignIn');
     Route::post("/Register",'UserController@Register');
+    Route::post("/CheckUsername",'UserController@CheckUsername');
 
 
 
